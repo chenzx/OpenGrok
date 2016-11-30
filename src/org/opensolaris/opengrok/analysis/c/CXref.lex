@@ -42,6 +42,9 @@ import org.opensolaris.opengrok.web.Util;
 %ignorecase
 %int
 %{
+  /* Must match WhiteSpace regex */
+  private final static String WHITE_SPACE = "[ \t\f\r]+";
+
   // TODO move this into an include file when bug #16053 is fixed
   @Override
   protected int getLineNumber() { return yyline; }
@@ -156,5 +159,28 @@ Number = (0[xX][0-9a-fA-F]+|[0-9]+\.[0-9]+|[1-9][0-9]*)(([eE][+-]?[0-9]+)?[ufdlU
 {FNameChar}+ "@" {FNameChar}+ "." {FNameChar}+
         {
           writeEMailAddress(yytext());
+        }
+
+("#if" | "#ifdef") {WhiteSpace} {Identifier}
+        {
+        String text = yytext();
+        String[] tokens = text.split(WHITE_SPACE, 2); //2 tokens!
+        String feature_macro_name = tokens[1];
+        out.append(tokens[0])
+            .append(text.substring(tokens[0].length(),
+                      text.length() - tokens[1].length()));//this is ws;
+        writeSymbol(feature_macro_name, Consts.kwd, yyline, true, true);
+        }
+
+("#if" | "#ifdef") {WhiteSpace} {Identifier} "(" {Identifier} ")"
+        {
+        //to support #if BUILD_FLAG(XXX) syntax, or #if defined(XXX)
+        String text = yytext();
+        int left_brace_index = text.indexOf("(");
+        int right_brace_index = text.indexOf(")");
+        out.append(text.substring(0, left_brace_index+1));
+        String feature_macro_name = text.substring(left_brace_index+1, right_brace_index);
+        writeSymbol(feature_macro_name, Consts.kwd, yyline, true, true);
+        out.append(")");
         }
 }
