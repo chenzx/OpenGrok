@@ -555,6 +555,23 @@ public abstract class JFlexXref {
     protected void writeSymbol(
             String symbol, Set<String> keywords, int line, boolean caseSensitive)
             throws IOException {
+        writeSymbol(symbol, keywords, line, caseSensitive, false);
+    }
+
+    /**
+     * Write a symbol and generate links as appropriate.
+     *
+     * @param symbol the symbol to write
+     * @param keywords a set of keywords recognized by this analyzer (no links
+     * will be generated if the symbol is a keyword)
+     * @param line the line number on which the symbol appears
+     * @param caseSensitive Whether the keyword list is case sensitive
+     * @param directGenerateRefLink
+     * @throws IOException if an error occurs while writing to the stream
+     */
+    protected void writeSymbol(
+            String symbol, Set<String> keywords, int line, boolean caseSensitive, boolean directGenerateRefLink)
+            throws IOException {
         String[] strs = new String[1];
         strs[0] = "";
         String jsEscapedSymbol = symbol.replace("'", "\\'");
@@ -628,7 +645,10 @@ public abstract class JFlexXref {
             // link to search for all definitions of that symbol instead.
             out.append("<a href=\"");
             out.append(urlPrefix);
-            out.append("defs=");
+            if (directGenerateRefLink)
+                out.append("refs=");
+            else
+                out.append("defs=");
             out.append(symbol);
             appendProject();
             out.append("\"");
