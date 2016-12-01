@@ -322,8 +322,8 @@ public class AnalyzerGuru {
     public void populateDocument(Document doc, File file, String path,
             FileAnalyzer fa, Writer xrefOut)
             throws IOException {
-        if (file.length()>4*1024*1024) //apply to global files;
-                throw new IOException("file size > 4MB, skip : "+file.getAbsolutePath());
+        if (file.length()==0 || file.length()>4*1024*1024) //apply to global files;
+                throw new IOException("file size > 4MB or ==0, skip : "+file.getAbsolutePath());
         if (file.getAbsolutePath().endsWith(".js") && file.length()>512*1024)
                 throw new IOException("js file size > 512KB, skip : "+file.getAbsolutePath());
 
