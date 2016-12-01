@@ -322,6 +322,11 @@ public class AnalyzerGuru {
     public void populateDocument(Document doc, File file, String path,
             FileAnalyzer fa, Writer xrefOut)
             throws IOException {
+        if (file.length()>4*1024*1024) //apply to global files;
+                throw new IOException("file size > 4MB, skip : "+file.getAbsolutePath());
+        if (file.getAbsolutePath().endsWith(".js") && file.length()>512*1024)
+                throw new IOException("js file size > 512KB, skip : "+file.getAbsolutePath());
+
         String date = DateTools.timeToString(file.lastModified(),
                 DateTools.Resolution.MILLISECOND);
         doc.add(new Field(QueryBuilder.U, Util.path2uid(path, date),
