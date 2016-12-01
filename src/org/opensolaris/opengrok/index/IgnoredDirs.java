@@ -45,6 +45,13 @@ public final class IgnoredDirs extends Filter {
         ".hg",
         ".razor",
         ".bzr",
+
+        "test", //这个针对chromium代码会忽略掉大量文件。。。
+        "android_tools", //内置的android_tools，chromium不使用外部的sdk/ndk
+        "llvm-build", //内置的llvm编译器
+        "toolchain",
+        "binutils",
+        ".gradle"
     };
 
     public IgnoredDirs() {

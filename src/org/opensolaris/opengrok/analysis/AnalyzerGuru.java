@@ -324,7 +324,7 @@ public class AnalyzerGuru {
             throws IOException {
         if (file.length()==0 || file.length()>4*1024*1024) //apply to global files;
                 throw new IOException("file size > 4MB or ==0, skip : "+file.getAbsolutePath());
-        if (file.getAbsolutePath().endsWith(".js") && file.length()>512*1024)
+        if (path.endsWith(".js") && file.length()>512*1024)
                 throw new IOException("js file size > 512KB, skip : "+file.getAbsolutePath());
 
         String date = DateTools.timeToString(file.lastModified(),
