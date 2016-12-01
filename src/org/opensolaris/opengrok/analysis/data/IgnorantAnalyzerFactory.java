@@ -33,6 +33,14 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 public class IgnorantAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
         "BDF", "XPM", "PS", "AFM", "PDF", "LIB", "PDB"
+        ,"O","EXE","DLL","LIB"
+        ,"SO","A","NEXE"
+        ,"WEBM","WEBP","MP4","WMV","MP3","PNG","JPG","BMP","SVG","JPEG","TIFF","UCM","ICO"
+        ,"GIF","WAV","VP9"
+        ,"TGZ","TAR","BZ2","JAR","ZIP","Z","7Z","RAR"
+        ,"JSON","XML","TXT","HTML"
+        ,"PYC"
+        ,"PAK","GRD","XTB","STAMP"
     };
 
     private static final String[] MAGICS = {
