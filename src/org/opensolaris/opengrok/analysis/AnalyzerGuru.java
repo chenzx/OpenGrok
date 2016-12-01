@@ -329,7 +329,7 @@ public class AnalyzerGuru {
         doc.add(new Field(QueryBuilder.FULLPATH, file.getAbsolutePath(),
                 string_ft_nstored_nanalyzed_norms));
         doc.add(new SortedDocValuesField(QueryBuilder.FULLPATH, new BytesRef(file.getAbsolutePath())));
-
+        /*
         try {
             HistoryReader hr = HistoryGuru.getInstance().getHistoryReader(file);
             if (hr != null) {
@@ -339,6 +339,7 @@ public class AnalyzerGuru {
         } catch (HistoryException e) {
             LOGGER.log(Level.WARNING, "An error occurred while reading history: ", e);
         }
+        */
         doc.add(new Field(QueryBuilder.DATE, date, string_ft_stored_nanalyzed_norms));
         doc.add(new SortedDocValuesField(QueryBuilder.DATE, new BytesRef(date)));
         if (path != null) {
