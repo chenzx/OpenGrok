@@ -181,18 +181,26 @@ ParamName = {Identifier} | "<" {Identifier} ">"
           writeEMailAddress(yytext());
         }
 
-("#if" | "#ifdef") {WhiteSpace} {Identifier}
+("#if" | "#ifdef") {WhiteSpace} \!? {Identifier}
         {
-        String text = yytext();
-        String[] tokens = text.split(WHITE_SPACE, 2); //2 tokens!
-        String feature_macro_name = tokens[1];
-        out.append(tokens[0])
-            .append(text.substring(tokens[0].length(),
-                      text.length() - tokens[1].length()));//this is ws;
-        writeSymbol(feature_macro_name, Consts.kwd, yyline, true, true);
+            String text = yytext();
+            if(text.indexOf("!")>=0){
+                 int left_not_index = text.indexOf("!");
+                 int right_end_index = text.length()-1;
+                 out.append(text.substring(0, left_not_index+1));
+                String feature_macro_name = text.substring(left_not_index+1);
+                writeSymbol(feature_macro_name, Consts.kwd, yyline, true, true);
+            }else{
+                String[] tokens = text.split(WHITE_SPACE, 2); //2 tokens!
+                String feature_macro_name = tokens[1];
+                out.append(tokens[0])
+                    .append(text.substring(tokens[0].length(),
+                              text.length() - tokens[1].length()));//this is ws;
+                writeSymbol(feature_macro_name, Consts.kwd, yyline, true, true);
+            }
         }
 
-("#if" | "#ifdef") {WhiteSpace} {Identifier} "(" {Identifier} ")"
+("#if" | "#ifdef") {WhiteSpace} \!? {Identifier} "(" {Identifier} ")"
         {
         //to support #if BUILD_FLAG(XXX) syntax, or #if defined(XXX)
         String text = yytext();
